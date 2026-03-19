@@ -20,4 +20,65 @@ fullElemPageBackBtn.forEach(function(back){
 })
 
 }
-openFeatures()
+//openFeatures()
+
+
+
+let currentTask=[
+    {
+        task:'Mandir Jao',
+        details:'Hanuman Ji Wale',
+        imp:true
+    },
+    {
+        task:'Reading Karo',
+        details:'Exam ke liye',
+        imp:false
+    },
+    {
+        task:'DSA Karo',
+        details:'Placement ke liye',
+        imp:true
+    },
+]
+
+
+function renderTask(){
+    var allTask=document.querySelector('.allTask')
+
+var sum=''
+
+currentTask.forEach(function(elem){
+    sum+=`<div class="task">
+                        <h5>${elem.task} <span class="${elem.imp}">imp</span></h5>
+                        <button>Mark as Completed</button>
+                    </div>`
+
+})
+
+allTask.innerHTML=sum
+}
+
+renderTask()
+
+
+let form=document.querySelector('.addTask form')
+let taskInput=document.querySelector('.addTask form #task-input')
+let taskDetailsInput=document.querySelector('.addTask form textarea')
+let taskCheckbox=document.querySelector('.addTask form #check')
+
+
+form.addEventListener('submit',function(e){
+    e.preventDefault()
+    currentTask.push(
+        {
+    task:taskInput.value,
+    details:taskDetailsInput.value,
+    imp:taskCheckbox.checked})
+
+    taskInput.value=''
+    taskDetailsInput.value=''
+    taskCheckbox.checked=false
+
+    renderTask()
+})
