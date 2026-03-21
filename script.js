@@ -1,84 +1,78 @@
-function openFeatures(){
-    var allElems=document.querySelectorAll('.elem')
-    var fullElemPage=document.querySelectorAll('.fullElem')
-    var fullElemPageBackBtn=document.querySelectorAll('.fullElem .back')
+function openFeatures() {
+  var allElems = document.querySelectorAll(".elem");
+  var fullElemPage = document.querySelectorAll(".fullElem");
+  var fullElemPageBackBtn = document.querySelectorAll(".fullElem .back");
 
-allElems.forEach(function(elem){
+  allElems.forEach(function (elem) {
+    elem.addEventListener("click", function () {
+      fullElemPage[elem.id].style.display = "block";
+    });
+  });
 
-    elem.addEventListener('click', function(){
-       fullElemPage[elem.id].style.display='block'
-
-    })
-})
-
-fullElemPageBackBtn.forEach(function(back){
-    back.addEventListener('click',function(){
-         fullElemPage[back.id].style.display='none'
-
-    })
-
-})
-
+  fullElemPageBackBtn.forEach(function (back) {
+    back.addEventListener("click", function () {
+      fullElemPage[back.id].style.display = "none";
+    });
+  });
 }
+
 //openFeatures()
 
+function todoList() {
+  var currentTask = [];
 
+  if (localStorage.getItem("currentTask")) {
+    currentTask = JSON.parse(localStorage.getItem("currentTask"));
+  } else {
+    console.log("Task list is empty");
+  }
 
-let currentTask=[
-    {
-        task:'Mandir Jao',
-        details:'Hanuman Ji Wale',
-        imp:true
-    },
-    {
-        task:'Reading Karo',
-        details:'Exam ke liye',
-        imp:false
-    },
-    {
-        task:'DSA Karo',
-        details:'Placement ke liye',
-        imp:true
-    },
-]
+  function renderTask() {
+    var allTask = document.querySelector(".allTask");
 
+    var sum = "";
 
-function renderTask(){
-    var allTask=document.querySelector('.allTask')
-
-var sum=''
-
-currentTask.forEach(function(elem){
-    sum+=`<div class="task">
+    currentTask.forEach(function (elem, idx) {
+      sum += `<div class="task">
                         <h5>${elem.task} <span class="${elem.imp}">imp</span></h5>
-                        <button>Mark as Completed</button>
-                    </div>`
+                        <button id=${idx}>Mark as Completed</button>
+                    </div>`;
+    });
 
-})
+    allTask.innerHTML = sum;
+    localStorage.setItem("currentTask", JSON.stringify(currentTask));
 
-allTask.innerHTML=sum
-}
+    document.querySelectorAll(".task button").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      currentTask.splice(btn.id, 1);
+      renderTask();
+      
+      });
+    });
+  }
 
-renderTask()
+  renderTask();
 
+  let form = document.querySelector(".addTask form");
+  let taskInput = document.querySelector(".addTask form #task-input");
+  let taskDetailsInput = document.querySelector(".addTask form textarea");
+  let taskCheckbox = document.querySelector(".addTask form #check");
 
-let form=document.querySelector('.addTask form')
-let taskInput=document.querySelector('.addTask form #task-input')
-let taskDetailsInput=document.querySelector('.addTask form textarea')
-let taskCheckbox=document.querySelector('.addTask form #check')
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    currentTask.push({
+      task: taskInput.value,
+      details: taskDetailsInput.value,
+      imp: taskCheckbox.checked,
+    });
 
-
-form.addEventListener('submit',function(e){
-    e.preventDefault()
-    currentTask.push(
-        {
-    task:taskInput.value,
-    details:taskDetailsInput.value,
-    imp:taskCheckbox.checked})
-
-    taskInput.value=''
-    taskDetailsInput.value=''
+    renderTask();
+    
     taskCheckbox.checked=false
+    taskInput.value=''
+    taskDetailsInput=''
+  });
 
-    renderTask()
-})
+  
+}
+//todoList()
