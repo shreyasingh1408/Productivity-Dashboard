@@ -112,17 +112,69 @@ dayPlannerInput.forEach(function(elem){
   })
 })
 }
-
 dailyPlanner()
 
-var motivationQuote=document.querySelector('.motivation-2 h1')
-var motivationAuthor=document.querySelector('.motivation-3 h2')
 
-async function fetchQuote(){
-  let response= await fetch('https://api.quotable.io/random')
+
+function motivationQuote(){
+  var motivationQuoteContent=document.querySelector('.motivation-2 h1')
+  var motivationAuthor=document.querySelector('.motivation-3 h2')
+
+  async function fetchQuote(){
+  try{
+  let response= await fetch("https://api.quotable.io/random")
   let data=await response.json()
-  motivationQuote.innerHTML=data.content
+  motivationQuoteContent.innerHTML=data.content
   motivationAuthor.innerHTML=data.author
-
+  }catch(err){
+    console.log(err)
+  }
 }
 fetchQuote()
+
+}
+motivationQuote()
+
+
+let timer=document.querySelector('.pomo-timer h1')
+let startBtn=document.querySelector('.pomo-timer .start-timer')
+let pauseBtn=document.querySelector('.pomo-timer .pause-timer')
+let resetBtn=document.querySelector('.pomo-timer .reset-timer')
+
+let timerInterval=null
+let totalSeconds=25*60
+
+function updateTimer(){
+  let minutes=Math.floor(totalSeconds/60)
+  let seconds=totalSeconds%60
+
+  timer.innerHTML=`${String(minutes).padStart('2','0')}:${String(seconds).padStart('2','0')}`
+
+}
+
+function startTimer(){
+  clearInterval(timerInterval)
+  timerInterval=setInterval(function(){
+    if(totalSeconds>0){
+      totalSeconds--
+      updateTimer()
+    }else{
+      clearInterval(timerInterval)
+    }
+  },100)
+  
+}
+
+
+function pauseTimer(){
+  clearInterval(timerInterval)
+}
+function resetTimer(){
+  
+  totalSeconds=25*60
+  clearInterval(timerInterval)
+   updateTimer()
+}
+startBtn.addEventListener('click',startTimer)
+pauseBtn.addEventListener('click',pauseTimer)
+resetBtn.addEventListener('click',resetTimer)
