@@ -15,8 +15,8 @@ function openFeatures() {
     });
   });
 }
-
 openFeatures()
+
 
 function todoList() {
   var currentTask = [];
@@ -78,7 +78,6 @@ function todoList() {
 todoList()
 
 
-
 function dailyPlanner(){
   var dayPlanner= document.querySelector('.day-planner')
 var dayPlanData=JSON.parse(localStorage.getItem('dayPlanData'))||{}
@@ -115,7 +114,6 @@ dayPlannerInput.forEach(function(elem){
 dailyPlanner()
 
 
-
 function motivationQuote(){
   var motivationQuoteContent=document.querySelector('.motivation-2 h1')
   var motivationAuthor=document.querySelector('.motivation-3 h2')
@@ -136,10 +134,13 @@ fetchQuote()
 motivationQuote()
 
 
-let timer=document.querySelector('.pomo-timer h1')
+function pomodoroTimer(){
+  let timer=document.querySelector('.pomo-timer h1')
 let startBtn=document.querySelector('.pomo-timer .start-timer')
 let pauseBtn=document.querySelector('.pomo-timer .pause-timer')
 let resetBtn=document.querySelector('.pomo-timer .reset-timer')
+var session=document.querySelector('pomodoro-fullpage .session')
+var isWorkSession=true
 
 let timerInterval=null
 let totalSeconds=25*60
@@ -154,15 +155,40 @@ function updateTimer(){
 
 function startTimer(){
   clearInterval(timerInterval)
-  timerInterval=setInterval(function(){
+
+  if(isWorkSession){
+
+    timerInterval=setInterval(function(){
     if(totalSeconds>0){
       totalSeconds--
       updateTimer()
     }else{
+      isWorkSession=false
       clearInterval(timerInterval)
+      timer.innerHTML='05:00'
+      session.innerHTML='Take a Break'
+      session.style.backgroundColor='var(--blue)'
+      totalSeconds=5*60
     }
-  },100)
-  
+  },1000)
+
+  }else{
+
+    timerInterval=setInterval(function(){
+    if(totalSeconds>0){
+      totalSeconds--
+      updateTimer()
+    }else{
+      isWorkSession=true
+      clearInterval(timerInterval)
+      timer.innerHTML='25:00'
+      session.innerHTML='Work Session'
+      session.style.backgroundColor='var(--green)'
+      totalSeconds=25*60
+    }
+  },1000)
+  }
+
 }
 
 
@@ -178,3 +204,19 @@ function resetTimer(){
 startBtn.addEventListener('click',startTimer)
 pauseBtn.addEventListener('click',pauseTimer)
 resetBtn.addEventListener('click',resetTimer)
+
+
+}
+
+pomodoroTimer()
+
+
+var apiKey="8a275668bcf844d78e1165556262403"
+var city='Kanpur'
+
+async function weatherAPICall(){
+  var response=await fetch(`http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}`)
+  var data=await response.json()
+
+}
+weatherAPICall()
