@@ -213,10 +213,56 @@ pomodoroTimer()
 
 var apiKey="8a275668bcf844d78e1165556262403"
 var city='Kanpur'
+var header1Time=document.querySelector('.header1 h1')
+var header1Date=document.querySelector('.header1 h2')
+var header2Temp=document.querySelector('.header2 h2')
+var header2Condition=document.querySelector('.header2 h4')
+var pricipitation=document.querySelector('.header2 .pricipitation')
+var humidity=document.querySelector('.header2 .humidity')
+var wind=document.querySelector('.header2 .wind')
+
+var data=null
 
 async function weatherAPICall(){
   var response=await fetch(`http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}`)
-  var data=await response.json()
+   data=await response.json()
+   console.log(data.current)
+
+   header2Temp.innerHTML=`${data.current.temp_c} °C`
+   header2Condition.innerHTML=`${data.current.condition.text}`
+   wind.innerHTML=`Wind: ${data.currentw.wind_kph} km/h`
+   humidity.innerHTML=`Humidity: ${data.current.humidity} %`
+   pricipitation.innerHTML=`HeatIndex: ${data.current.heatindex_c} %`
+
 
 }
 weatherAPICall()
+
+
+function timeDate(){
+  const totalDaysOfWeek=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
+  const monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"
+]
+  var date=new Date()
+  var dayOfWeek=totalDaysOfWeek[date.getDay()]
+  var hours=date.getHours()
+  var minutes=date.getMinutes()
+  var seconds=date.getSeconds()
+  var tarik=date.getDate()
+  var month=monthNames[date.getMonth()]
+  var year=date.getFullYear()
+  header1Date.innerHTML=`${tarik} ${month}, ${year}`
+  if(hours > 12){
+    header1Time.innerHTML=`${dayOfWeek}, ${hours -12 }:${minutes}:${seconds} PM`
+
+  }else{
+    header1Time.innerHTML=`${dayOfWeek}, ${hours}:${minutes}:${seconds} AM` 
+
+  }
+
+}
+
+setInterval(()=>{
+  timeDate()
+},1000)
+  
