@@ -210,7 +210,8 @@ resetBtn.addEventListener('click',resetTimer)
 
 pomodoroTimer()
 
-
+function weatherFunctionality(){
+  
 var apiKey="8a275668bcf844d78e1165556262403"
 var city='Kanpur'
 var header1Time=document.querySelector('.header1 h1')
@@ -253,10 +254,10 @@ function timeDate(){
   var year=date.getFullYear()
   header1Date.innerHTML=`${tarik} ${month}, ${year}`
   if(hours > 12){
-    header1Time.innerHTML=`${dayOfWeek}, ${hours -12 }:${minutes}:${seconds} PM`
+    header1Time.innerHTML=`${dayOfWeek}, ${String(hours - 12).padStart('2','0')}:${String(minutes).padStart('2','0')}:${String(seconds).padStart('2','0')} PM` 
 
   }else{
-    header1Time.innerHTML=`${dayOfWeek}, ${hours}:${minutes}:${seconds} AM` 
+    header1Time.innerHTML=`${dayOfWeek}, ${String(hours).padStart('2','0')}:${String(minutes).padStart('2','0')}:${String(seconds).padStart('2','0')} AM` 
 
   }
 
@@ -266,3 +267,44 @@ setInterval(()=>{
   timeDate()
 },1000)
   
+
+}
+
+weatherFunctionality()
+
+
+
+function changeTheme(){
+  var theme=document.querySelector('.theme')
+var rootElement=document.documentElement
+var flag=0
+theme.addEventListener('click',function(){
+
+
+  if(flag==0){
+    rootElement.style.setProperty('--pri','#F8F4E1')
+  rootElement.style.setProperty('--sec','#222831')
+  rootElement.style.setProperty('--tri1','#948979')
+  rootElement.style.setProperty('--tri2','#393E46')
+  flag=1
+
+  }else if(flag==1){
+      rootElement.style.setProperty('--pri','#F1EFEC')
+  rootElement.style.setProperty('--sec','#030303')
+  rootElement.style.setProperty('--tri1','#D4C9BE')
+  rootElement.style.setProperty('--tri2','#123458')
+  flag=2
+
+  }else if(flag==2){
+    rootElement.style.setProperty('--pri','#F8F4E1')
+  rootElement.style.setProperty('--sec','#381c0a')
+  rootElement.style.setProperty('--tri1','#FEBA17')
+  rootElement.style.setProperty('--tri2','#74512D')
+  flag=0
+  }
+
+})
+
+
+}
+changeTheme()
